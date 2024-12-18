@@ -20,6 +20,8 @@ class EmojiCollectionViewController: UICollectionViewController {
         Emoji(symbol: "💤", name: "Snore", description: "Three blue \'z\'s.", usage: "tired, sleepiness"),
         Emoji(symbol: "🏁", name: "Checkered Flag", description: "A black-and-white checkered flag.", usage: "completion")
     ]
+	
+	var layout: UICollectionViewLayout?
     
     private var collectionDataSource: UICollectionViewDiffableDataSource<String, Emoji.ID>!
     private var emojiIdentifiersSnapshot: NSDiffableDataSourceSnapshot<String, Emoji.ID> {
@@ -33,13 +35,60 @@ class EmojiCollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureDataSource()
+		
+		layout = generateGridLayout()
+		
+		if let layout = layout {
+			collectionView.collectionViewLayout = layout
+		}
+		
+		configureDataSource()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionDataSource.apply(emojiIdentifiersSnapshot, animatingDifferences: true)
     }
+	
+	func generateGridLayout() -> UICollectionViewLayout {
+		let padding: CGFloat = 20
+		
+		let item: NSCollectionLayoutItem = .init(
+			layoutSize: NSCollectionLayoutSize(
+				widthDimension: .fractionalWidth(1),
+				heightDimension: .fractionalHeight(1)
+			)
+		)
+		
+		let group = NSCollectionLayoutGroup.horizontal(
+			layoutSize: NSCollectionLayoutSize(
+				widthDimension: .fractionalWidth(1),
+				heightDimension: .fractionalHeight(1/4)
+			),
+			subitem: item,
+			count: 2
+		)
+		group.interItemSpacing = .fixed(padding)
+		
+		group.contentInsets = NSDirectionalEdgeInsets(
+			top: 0,
+			leading: padding,
+			bottom: 0,
+			trailing: padding
+		)
+		
+		let section: NSCollectionLayoutSection = .init(group: group)
+		section.interGroupSpacing = padding
+		
+		section.contentInsets = NSDirectionalEdgeInsets(
+			top: padding,
+			leading: 0,
+			bottom: padding,
+			trailing: 0
+			)
+		
+		return UICollectionViewCompositionalLayout(section: section)
+	}
     
     func configureDataSource() {
         let cellHandler: UICollectionView.CellRegistration<EmojiCollectionViewCell, Emoji.ID>.Handler = { [weak self] cell, indexPath, itemIdentifier in
