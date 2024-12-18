@@ -258,12 +258,15 @@ class EmojiCollectionViewController: UICollectionViewController {
               let sourceViewController = segue.source as? AddEditEmojiTableViewController,
               let emoji = sourceViewController.emoji else { return }
 
-        if let i = emojis.firstIndex(where: { $0 == emoji }) {
-            emojis[i] = emoji
-            var snapshot = collectionDataSource.snapshot()
-            snapshot.reconfigureItems([emoji.id])
-            collectionDataSource.apply(snapshot, animatingDifferences: true)
-        }
+		if let i = emojis.firstIndex(where: { $0 == emoji }) {
+			emojis[i] = emoji
+			var snapshot = collectionDataSource.snapshot()
+			snapshot.reconfigureItems([emoji.id])
+			collectionDataSource.apply(snapshot, animatingDifferences: true)
+		} else {
+			emojis.append(emoji)
+			collectionDataSource.apply(emojiIdentifiersSnapshot, animatingDifferences: true)
+		}
     }
 
     // MARK: - UICollectionViewDelegate

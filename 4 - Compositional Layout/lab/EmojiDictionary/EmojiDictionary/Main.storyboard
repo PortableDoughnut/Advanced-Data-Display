@@ -180,12 +180,12 @@
                     <navigationItem key="navigationItem" title="Root View Controller" id="BG7-13-agr">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="r0g-Zu-nM4">
                             <connections>
-                                <segue destination="gyQ-eB-sOt" kind="unwind" unwindAction="unwindToEmojiTableViewWithSegue:" id="Gyj-Q6-9iK"/>
+                                <segue destination="gyQ-eB-sOt" kind="unwind" unwindAction="unwindToEmojiTableViewWithSegue:" id="XWW-rP-f9J"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="Ejx-N2-Mog">
                             <connections>
-                                <segue destination="gyQ-eB-sOt" kind="unwind" identifier="saveUnwind" unwindAction="unwindToEmojiTableViewWithSegue:" id="9Zy-hH-haX"/>
+                                <segue destination="gyQ-eB-sOt" kind="unwind" identifier="saveUnwind" unwindAction="unwindToEmojiTableViewWithSegue:" id="FHU-3i-TPj"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
