@@ -63,6 +63,47 @@ class EmojiCollectionViewController: UICollectionViewController {
 		collectionDataSource.apply(emojiIdentifiersSnapshot, animatingDifferences: true)
 	}
 
+	func generateColumnLayout() -> UICollectionViewLayout {
+		let padding: CGFloat = 10
+		
+		let item: NSCollectionLayoutItem = .init(
+			layoutSize: NSCollectionLayoutSize(
+				widthDimension: .fractionalWidth(1),
+				heightDimension: .fractionalHeight(1)
+			)
+			)
+		
+		let group = NSCollectionLayoutGroup.horizontal(
+			layoutSize: NSCollectionLayoutSize(
+				widthDimension: .fractionalWidth(1),
+				heightDimension: .absolute(120)
+			),
+			subitem: item,
+			count: 1
+			)
+		
+		group.contentInsets = NSDirectionalEdgeInsets(
+			top: 0,
+			leading: padding,
+			bottom: 0,
+			trailing: padding
+			)
+		
+		let section: NSCollectionLayoutSection = .init(group: group)
+		
+		section.interGroupSpacing = padding
+		
+		section.contentInsets = NSDirectionalEdgeInsets(
+			top: padding,
+			leading: 0,
+			bottom: padding,
+			trailing: 0
+			)
+		section.boundarySupplementaryItems = [generateHeader()]
+		
+		return UICollectionViewCompositionalLayout(section: section)
+	}
+	
 	func generateGridLayout() -> UICollectionViewLayout {
 		let padding: CGFloat = 20
 
@@ -131,6 +172,7 @@ class EmojiCollectionViewController: UICollectionViewController {
 			// Step 3: Configure cell
 			cell.update(with: emoji)
 		}
+		
 
 		// Two registration handlers to display the same cell with a different associated layout
 		let itemNib = UINib(nibName: "EmojiCollectionViewCell+Item", bundle: Bundle(for: EmojiCollectionViewCell.self))
